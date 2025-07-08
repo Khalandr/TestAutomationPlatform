@@ -1,0 +1,48 @@
+/* CSS Grid Layout for TestAutomationPlatform */
+
+.app-container {
+    display: grid;
+    grid-template-areas:
+        "header header header"
+        "sidebar-left main-content sidebar-right"
+        "footer footer footer";
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 200px 1fr 250px;
+    min-height: 100vh;
+}
+
+.header {
+    grid-area: header;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.sidebar-left {
+    grid-area: sidebar-left;
+    background-color: var(--background-color);
+    padding: 1rem;
+    border-right: 1px solid var(--border-color);
+}
+
+.main-content {
+    grid-area: main-content;
+    background-color: white;
+    padding: 2rem;
+}
+
+.sidebar-right {
+    grid-area: sidebar-right;
+    background-color: var(--background-color);
+    padding: 1rem;
+    border-left: 1px solid var(--border-color);
+}
+
+.footer {
+    grid-area: footer;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    border-top: 2px solid var(--border-color);
+}
