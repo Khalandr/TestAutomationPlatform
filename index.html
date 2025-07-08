@@ -17,23 +17,88 @@
 
     <aside class="sidebar-left">
         <h2>Levels</h2>
-        <button class="level-btn">1</button>
+        <button class="level-btn active" data-level="1">1</button>
+        <button class="level-btn" data-level="2">2</button>
+        <button class="level-btn" data-level="3">3</button>
+        <button class="level-btn" data-level="4">4</button>
+        <button class="level-btn" data-level="5">5</button>
+        <button class="level-btn" data-level="6">6</button>
+        <button class="level-btn" data-level="7">7</button>
+        <button class="level-btn" data-level="8">8</button>
+        <button class="level-btn" data-level="9">9</button>
+        <button class="level-btn" data-level="10">10</button>
+        <button class="level-btn" data-level="11">11</button>
+        <button class="level-btn" data-level="12">12</button>
+        <button class="level-btn" data-level="13">13</button>
+        <button class="level-btn" data-level="14">14</button>
+        <button class="level-btn" data-level="15">15</button>
+        <button class="level-btn" data-level="16">16</button>
+        <button class="level-btn" data-level="17">17</button>
+        <button class="level-btn" data-level="18">18</button>
+        <button class="level-btn" data-level="19">19</button>
+        <button class="level-btn" data-level="20">20</button>
     </aside>
 
     <main class="main-content">
-        <h2>Level 1</h2>
-        <p>This is a login form challenge where you'll learn to create and style HTML forms.</p>
+        <div class="level-content">
+            <h2>Level 1: Login Form</h2>
+            <form id="loginForm">
+                <div>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" id="loginBtn">Login</button>
+            </form>
+            <div id="loginResult"></div>
+        </div>
     </main>
 
     <aside class="sidebar-right">
-        <h3>Level Info</h3>
-        <p><strong>Objective:</strong> Create a functional login form with username and password fields.</p>
-        <p><strong>Skills:</strong> HTML forms, input validation, basic styling.</p>
+        <h3>Level 1 - Login Form</h3>
+
+        <h4>Test Scenarios:</h4>
+        <h5>Positive:</h5>
+        <ul>
+            <li>Valid credentials: admin/password123</li>
+            <li>Expected: "Welcome, admin!" message</li>
+        </ul>
+
+        <h5>Negative:</h5>
+        <ul>
+            <li>Empty username/password</li>
+            <li>Invalid credentials</li>
+            <li>SQL injection attempts</li>
+            <li>Expected: Error messages displayed</li>
+        </ul>
+
+        <h4>Automation Tips:</h4>
+        <ul>
+            <li>Use ID selectors for reliable element location</li>
+            <li>Wait for elements to be visible before interaction</li>
+            <li>Clear fields before entering data</li>
+            <li>Verify error messages for negative cases</li>
+            <li>Check for proper form validation behavior</li>
+        </ul>
+
+        <h4>Skills Practiced:</h4>
+        <ul>
+            <li>Element identification strategies</li>
+            <li>Input field automation</li>
+            <li>Form submission handling</li>
+            <li>Assertion techniques</li>
+            <li>Negative testing approaches</li>
+        </ul>
     </aside>
 
     <footer class="footer">
         <p>Footer content will go here</p>
     </footer>
 </div>
+
+<script src="assets/js/main.js"></script>
 </body>
 </html>

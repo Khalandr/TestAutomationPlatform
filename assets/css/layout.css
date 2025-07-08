@@ -8,7 +8,8 @@
         "footer footer footer";
     grid-template-rows: auto 1fr auto;
     grid-template-columns: 200px 1fr 250px;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .header {
@@ -24,12 +25,16 @@
     background-color: var(--background-color);
     padding: 1rem;
     border-right: 1px solid var(--border-color);
+    overflow-y: auto;
 }
 
 .main-content {
     grid-area: main-content;
     background-color: white;
     padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sidebar-right {
@@ -37,6 +42,7 @@
     background-color: var(--background-color);
     padding: 1rem;
     border-left: 1px solid var(--border-color);
+    overflow-y: auto;
 }
 
 .footer {
