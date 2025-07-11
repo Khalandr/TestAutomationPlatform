@@ -411,6 +411,7 @@ window.Level5 = {
             file.status = 'pending';
             file.progress = 0;
             this.updateFileQueue();
+            this.updateOverallProgress(); // Update progress immediately after status change
             this.uploadFile(file);
         }
     },
@@ -490,8 +491,7 @@ window.Level5 = {
     },
 
     updateOverallProgress() {
-        // Calculate progress based on all files that have been processed or are being processed
-        const relevantFiles = this.files.filter(f => f.status !== 'pending');
+        // Calculate progress based on all files
         const totalFilesToProcess = this.files.length;
 
         if (totalFilesToProcess === 0) {
@@ -499,7 +499,8 @@ window.Level5 = {
             return;
         }
 
-        // Calculate weighted progress: completed files count as 100%, uploading files count by their progress
+        // Calculate weighted progress: only completed files count as 100%
+        // Uploading files count by their progress, failed and pending count as 0
         let totalProgress = 0;
 
         this.files.forEach(file => {
@@ -507,14 +508,12 @@ window.Level5 = {
                 case 'completed':
                     totalProgress += 100;
                     break;
-                case 'failed':
-                    totalProgress += 100; // Failed files count as processed
-                    break;
                 case 'uploading':
                     totalProgress += file.progress;
                     break;
+                case 'failed':
                 case 'pending':
-                    totalProgress += 0;
+                    totalProgress += 0; // Failed and pending files don't contribute to progress
                     break;
             }
         });
