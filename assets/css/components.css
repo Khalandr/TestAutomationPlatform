@@ -1,5 +1,6 @@
-/* Components Styles */
+/* Components Styles - Shared across all levels */
 
+/* Level Navigation Buttons */
 .level-btn {
     display: block;
     width: 100%;
@@ -22,7 +23,7 @@
     background-color: var(--primary-color);
 }
 
-/* Level Content Frame */
+/* Level Content Frame - Shared container */
 .level-content {
     background-color: white;
     border: 2px solid var(--border-color);
@@ -31,7 +32,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     width: 100%;
-    max-height: 80vh;
+    max-height: 70vh;
     overflow-y: auto;
 }
 
@@ -41,25 +42,7 @@
     color: var(--primary-color);
 }
 
-/* Form Styles */
-.form-section {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background-color: #f9f9f9;
-    border-radius: 6px;
-    border-left: 4px solid var(--secondary-color);
-}
-
-.form-section h3 {
-    margin: 0 0 1rem 0;
-    color: var(--primary-color);
-    font-size: 1.1rem;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
+/* Basic Form Elements - Shared across levels */
 .level-content label {
     display: block;
     margin-bottom: 0.5rem;
@@ -84,83 +67,8 @@
     box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-/* Radio Button Groups */
-.radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.radio-option {
-    display: flex;
-    align-items: center;
-    font-weight: normal !important;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-}
-
-.radio-option:hover {
-    background-color: #f0f0f0;
-}
-
-.radio-option input[type="radio"] {
-    width: auto;
-    margin-right: 0.5rem;
-    margin-bottom: 0;
-}
-
-/* Checkbox Groups */
-.checkbox-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.checkbox-option {
-    display: flex;
-    align-items: center;
-    font-weight: normal !important;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-}
-
-.checkbox-option:hover {
-    background-color: #f0f0f0;
-}
-
-.checkbox-option input[type="checkbox"] {
-    width: auto;
-    margin-right: 0.5rem;
-    margin-bottom: 0;
-}
-
-/* Conditional Sections */
-.conditional-section {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: #f0f8ff;
-    border-radius: 4px;
-    border: 1px dashed var(--secondary-color);
-}
-
-/* Form Actions */
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-}
-
 .level-content button {
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem;
     background-color: var(--secondary-color);
     color: white;
     border: none;
@@ -168,22 +76,13 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    min-width: 120px;
 }
 
 .level-content button:hover {
     background-color: #2980b9;
 }
 
-.level-content button[type="button"] {
-    background-color: #95a5a6;
-}
-
-.level-content button[type="button"]:hover {
-    background-color: #7f8c8d;
-}
-
-/* Result Messages */
+/* Result Messages - Shared across levels */
 .result {
     padding: 0.75rem;
     border-radius: 4px;
@@ -202,71 +101,6 @@
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
-}
-
-/* Tax Results Specific Styling */
-.tax-results {
-    text-align: left;
-}
-
-.tax-results h4 {
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-    text-align: center;
-}
-
-.results-grid {
-    display: grid;
-    gap: 0.5rem;
-}
-
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem;
-    border-bottom: 1px solid #eee;
-}
-
-.result-item.highlight {
-    background-color: #f8f9fa;
-    border: 2px solid var(--secondary-color);
-    border-radius: 4px;
-    font-weight: bold;
-    margin: 0.5rem 0;
-}
-
-.result-item .label {
-    font-weight: 600;
-}
-
-.result-item .value.refund {
-    color: #28a745;
-    font-weight: bold;
-}
-
-.result-item .value.owed {
-    color: #dc3545;
-    font-weight: bold;
-}
-
-/* Form Preview Styling */
-.form-preview {
-    text-align: left;
-    background-color: #f8f9fa;
-    padding: 1rem;
-    border-radius: 4px;
-    border-left: 4px solid var(--secondary-color);
-}
-
-.form-preview h4 {
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-}
-
-.form-preview p {
-    margin-bottom: 0.5rem;
-    padding: 0.25rem 0;
-    border-bottom: 1px dotted #ccc;
 }/* Components Styles */
 
 .level-btn {

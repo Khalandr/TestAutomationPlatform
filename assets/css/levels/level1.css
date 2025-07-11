@@ -1,0 +1,16 @@
+/* Level 1 - Login Form Specific Styles */
+
+/* Login Form Layout */
+#loginForm div {
+    margin-bottom: 1rem;
+}
+
+#loginForm button {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* Login Result Styling */
+#loginResult {
+    margin-top: 1rem;
+}

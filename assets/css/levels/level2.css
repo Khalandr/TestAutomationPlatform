@@ -1,0 +1,33 @@
+/* Level 2 - Registration Form Specific Styles */
+
+/* Registration Form Layout */
+#registrationForm div {
+    margin-bottom: 1rem;
+}
+
+#registrationForm button {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* Registration Result Styling */
+#registrationResult {
+    margin-top: 1rem;
+}
+
+/* Enhanced styling for registration form */
+#registrationForm input[type="email"] {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+    padding-right: 35px;
+}
+
+#registrationForm input[type="password"] {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><circle cx="12" cy="16" r="1"></circle><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+    padding-right: 35px;
+}

@@ -1,0 +1,184 @@
+/* Level 3 - Tax Calculator Specific Styles */
+
+/* Form Groups - Reduced spacing */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Form Sections - Reduced spacing */
+.form-section {
+    margin-bottom: 1.5rem;
+}
+
+.form-section h3 {
+    margin: 0 0 0.75rem 0;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+/* Radio Button Groups - Compact spacing */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    font-weight: normal !important;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.radio-option:hover {
+    background-color: #f0f0f0;
+}
+
+.radio-option input[type="radio"] {
+    width: auto;
+    margin-right: 0.5rem;
+    margin-bottom: 0;
+}
+
+/* Checkbox Groups - Compact spacing */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    font-weight: normal !important;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.checkbox-option:hover {
+    background-color: #f0f0f0;
+}
+
+.checkbox-option input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.5rem;
+    margin-bottom: 0;
+}
+
+/* Conditional Sections - Simplified */
+.conditional-section {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border-left: 3px solid var(--secondary-color);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.form-actions button {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 120px;
+    width: auto;
+}
+
+.form-actions button:hover {
+    background-color: #2980b9;
+}
+
+.form-actions button[type="button"] {
+    background-color: #95a5a6;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: #7f8c8d;
+}
+
+/* Tax Results Specific Styling */
+.tax-results {
+    text-align: left;
+}
+
+.tax-results h4 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.results-grid {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.result-item.highlight {
+    background-color: #f8f9fa;
+    border: 2px solid var(--secondary-color);
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.result-item .label {
+    font-weight: 600;
+}
+
+.result-item .value.refund {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.result-item .value.owed {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Form Preview Styling */
+.form-preview {
+    text-align: left;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.form-preview h4 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.form-preview p {
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0;
+    border-bottom: 1px dotted #ccc;
+}

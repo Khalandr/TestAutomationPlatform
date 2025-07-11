@@ -208,6 +208,7 @@ window.Level3 = {
         const itemizedSection = document.getElementById('itemizedSection');
         const resetBtn = document.getElementById('resetBtn');
         const previewBtn = document.getElementById('previewBtn');
+        const calculateBtn = document.getElementById('calculateBtn');
 
         if (taxForm && taxResult) {
             // Handle deduction type change to show/hide itemized section
@@ -224,26 +225,47 @@ window.Level3 = {
             // Handle form submission
             taxForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                console.log('Calculate tax button clicked');
                 this.calculateTax();
             });
 
+            // Handle calculate button specifically (in case form submit doesn't work)
+            if (calculateBtn) {
+                calculateBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Calculate button clicked directly');
+                    this.calculateTax();
+                });
+            }
+
             // Handle reset button
-            resetBtn.addEventListener('click', () => {
-                taxForm.reset();
-                itemizedSection.style.display = 'none';
-                this.clearResults();
-            });
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    console.log('Reset button clicked');
+                    taxForm.reset();
+                    itemizedSection.style.display = 'none';
+                    this.clearResults();
+                });
+            }
 
             // Handle preview button
-            previewBtn.addEventListener('click', () => {
-                this.showPreview();
-            });
+            if (previewBtn) {
+                previewBtn.addEventListener('click', () => {
+                    console.log('Preview button clicked');
+                    this.showPreview();
+                });
+            }
+        } else {
+            console.error('Tax form or result div not found');
         }
     },
 
     calculateTax() {
+        console.log('calculateTax method called');
         const formData = this.getFormData();
         const taxResult = document.getElementById('taxResult');
+
+        console.log('Form data:', formData);
 
         // Clear previous results
         this.clearResults();
@@ -251,16 +273,23 @@ window.Level3 = {
         // Validation
         const validation = this.validateForm(formData);
         if (!validation.isValid) {
+            console.log('Validation failed:', validation.message);
             this.showResult(validation.message, 'error', taxResult);
             return;
         }
 
-        // Calculate tax
-        const calculation = this.performTaxCalculation(formData);
+        try {
+            // Calculate tax
+            const calculation = this.performTaxCalculation(formData);
+            console.log('Calculation result:', calculation);
 
-        // Display results
-        const resultHtml = this.formatTaxResults(calculation);
-        this.showResult(resultHtml, 'success', taxResult);
+            // Display results
+            const resultHtml = this.formatTaxResults(calculation);
+            this.showResult(resultHtml, 'success', taxResult);
+        } catch (error) {
+            console.error('Error in tax calculation:', error);
+            this.showResult('Error calculating tax. Please check your inputs.', 'error', taxResult);
+        }
     },
 
     getFormData() {
@@ -419,15 +448,35 @@ window.Level3 = {
         this.showResult(previewHtml, 'success', taxResult);
     },
 
-    clearResults() {
-        const taxResult = document.getElementById('taxResult');
-        taxResult.innerHTML = '';
-        taxResult.className = '';
+    showResult(message, type, resultElement) {
+        console.log('showResult called with:', { message: message.substring(0, 100), type, resultElement });
+
+        if (resultElement) {
+            resultElement.innerHTML = message;
+            resultElement.className = `result ${type}`;
+            console.log('Result displayed successfully');
+        } else {
+            console.error('Result element not found');
+            // Try to find it again
+            const taxResult = document.getElementById('taxResult');
+            if (taxResult) {
+                taxResult.innerHTML = message;
+                taxResult.className = `result ${type}`;
+                console.log('Result displayed using fallback method');
+            } else {
+                console.error('taxResult element not found at all');
+            }
+        }
     },
 
-    showResult(message, type, resultElement) {
-        if (window.LevelManager) {
-            LevelManager.showResult(message, type, resultElement);
+    clearResults() {
+        const taxResult = document.getElementById('taxResult');
+        if (taxResult) {
+            taxResult.innerHTML = '';
+            taxResult.className = '';
+            console.log('Results cleared');
+        } else {
+            console.log('taxResult element not found for clearing');
         }
     }
 };
