@@ -177,6 +177,7 @@ window.Level5 = {
         if (fileInput) {
             fileInput.addEventListener('change', (e) => {
                 this.handleFileSelection(e.target.files);
+                e.target.value = ''; // Reset input to allow selecting same files again
             });
         }
 
@@ -309,9 +310,10 @@ window.Level5 = {
             return { valid: false, error: `File too large (max ${this.formatFileSize(this.settings.maxFileSize)})` };
         }
 
-        // Check for duplicate names
-        if (this.files.some(f => f.name === file.name)) {
-            return { valid: false, error: 'File with same name already exists' };
+        // Check for duplicate names (allow if previous file was completed or failed)
+        const existingFile = this.files.find(f => f.name === file.name);
+        if (existingFile && (existingFile.status === 'pending' || existingFile.status === 'uploading')) {
+            return { valid: false, error: 'File with same name is currently being processed' };
         }
 
         return { valid: true };
@@ -373,6 +375,9 @@ window.Level5 = {
 
         // Bind file action events
         this.bindFileActions();
+
+        // Update overall progress after updating queue
+        this.updateOverallProgress();
     },
 
     bindFileActions() {
@@ -426,21 +431,11 @@ window.Level5 = {
         this.showUploadProgress();
         this.showFeedback(`Starting upload of ${pendingFiles.length} files...`, 'success');
 
-        // Upload files sequentially
-        this.uploadNextFile(0);
-    },
+        // Upload all files concurrently instead of sequentially
+        const uploadPromises = pendingFiles.map(file => this.uploadFile(file));
 
-    uploadNextFile(index) {
-        const pendingFiles = this.files.filter(f => f.status === 'pending');
-
-        if (index >= pendingFiles.length) {
+        Promise.all(uploadPromises).then(() => {
             this.completeUpload();
-            return;
-        }
-
-        const file = pendingFiles[index];
-        this.uploadFile(file).then(() => {
-            this.uploadNextFile(index + 1);
         });
     },
 
@@ -450,15 +445,15 @@ window.Level5 = {
             fileObj.progress = 0;
             this.updateFileQueue();
 
-            // Simulate upload progress
-            const uploadDuration = Math.random() * 3000 + 1000; // 1-4 seconds
-            const updateInterval = 50; // Update every 50ms
+            // Simulate upload progress with more realistic timing
+            const uploadDuration = Math.random() * 2000 + 1000; // 1-3 seconds
+            const updateInterval = 100; // Update every 100ms
             const totalUpdates = uploadDuration / updateInterval;
             let currentUpdate = 0;
 
             const progressInterval = setInterval(() => {
                 currentUpdate++;
-                fileObj.progress = Math.min(100, (currentUpdate / totalUpdates) * 100);
+                fileObj.progress = Math.min(100, Math.round((currentUpdate / totalUpdates) * 100));
 
                 this.updateFileQueue();
                 this.updateOverallProgress();
@@ -481,6 +476,7 @@ window.Level5 = {
 
                     this.updateFileQueue();
                     this.updateUploadedFiles();
+                    this.updateOverallProgress();
                     resolve();
                 }
             }, updateInterval);
@@ -490,21 +486,49 @@ window.Level5 = {
     showUploadProgress() {
         const uploadProgress = document.getElementById('uploadProgress');
         uploadProgress.style.display = 'block';
+        this.updateOverallProgress();
     },
 
     updateOverallProgress() {
-        const totalFiles = this.files.filter(f => f.status !== 'pending').length;
-        const completedFiles = this.files.filter(f => f.status === 'completed').length;
-        const failedFiles = this.files.filter(f => f.status === 'failed').length;
+        // Calculate progress based on all files that have been processed or are being processed
+        const relevantFiles = this.files.filter(f => f.status !== 'pending');
+        const totalFilesToProcess = this.files.length;
 
-        const overallPercent = totalFiles > 0 ?
-            Math.round(((completedFiles + failedFiles) / totalFiles) * 100) : 0;
+        if (totalFilesToProcess === 0) {
+            this.setOverallProgress(0);
+            return;
+        }
 
+        // Calculate weighted progress: completed files count as 100%, uploading files count by their progress
+        let totalProgress = 0;
+
+        this.files.forEach(file => {
+            switch (file.status) {
+                case 'completed':
+                    totalProgress += 100;
+                    break;
+                case 'failed':
+                    totalProgress += 100; // Failed files count as processed
+                    break;
+                case 'uploading':
+                    totalProgress += file.progress;
+                    break;
+                case 'pending':
+                    totalProgress += 0;
+                    break;
+            }
+        });
+
+        const overallPercent = Math.round(totalProgress / totalFilesToProcess);
+        this.setOverallProgress(overallPercent);
+    },
+
+    setOverallProgress(percent) {
         const overallProgress = document.getElementById('overallProgress');
         const overallProgressText = document.getElementById('overallProgressText');
 
-        if (overallProgress) overallProgress.style.width = `${overallPercent}%`;
-        if (overallProgressText) overallProgressText.textContent = `${overallPercent}%`;
+        if (overallProgress) overallProgress.style.width = `${percent}%`;
+        if (overallProgressText) overallProgressText.textContent = `${percent}%`;
     },
 
     completeUpload() {
@@ -520,6 +544,7 @@ window.Level5 = {
 
         this.showFeedback(message, completedFiles.length > 0 ? 'success' : 'error');
         this.updateUploadedFiles();
+        this.updateOverallProgress(); // Final progress update
     },
 
     updateUploadedFiles() {
