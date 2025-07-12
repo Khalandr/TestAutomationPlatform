@@ -389,7 +389,9 @@ window.Level8 = {
             if (e.target.classList.contains('sortable') || e.target.parentElement.classList.contains('sortable')) {
                 const header = e.target.classList.contains('sortable') ? e.target : e.target.parentElement;
                 const column = header.getAttribute('data-column');
-                this.sortTable(column);
+                if (column) {
+                    this.sortTable(column);
+                }
             }
         });
 
@@ -532,6 +534,9 @@ window.Level8 = {
     },
 
     sortTable(column) {
+        console.log('sortTable called with column:', column);
+        console.log('Current sort:', this.currentSort);
+
         // Toggle sort direction if same column, otherwise default to ascending
         if (this.currentSort.column === column) {
             this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
@@ -539,6 +544,8 @@ window.Level8 = {
             this.currentSort.column = column;
             this.currentSort.direction = 'asc';
         }
+
+        console.log('New sort:', this.currentSort);
 
         this.filteredEmployees.sort((a, b) => {
             let valueA = a[column];
@@ -573,7 +580,7 @@ window.Level8 = {
         // Clear all indicators
         document.querySelectorAll('.sort-indicator').forEach(indicator => {
             indicator.textContent = '';
-            indicator.className = 'sort-indicator';
+            indicator.classList.remove('active', 'asc', 'desc');
         });
 
         // Set active indicator
@@ -581,7 +588,7 @@ window.Level8 = {
             const activeHeader = document.querySelector(`[data-column="${this.currentSort.column}"] .sort-indicator`);
             if (activeHeader) {
                 activeHeader.textContent = this.currentSort.direction === 'asc' ? '↑' : '↓';
-                activeHeader.className = `sort-indicator active ${this.currentSort.direction}`;
+                activeHeader.classList.add('active', this.currentSort.direction);
             }
         }
     },
