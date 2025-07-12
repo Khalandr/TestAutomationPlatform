@@ -52,7 +52,6 @@ window.Level7 = {
                 <!-- Task Management Section -->
                 <div class="drag-section active" id="tasks-section">
                     <h3>Task Priority Management</h3>
-                    <p class="section-description">Drag tasks to reorder by priority. Higher priority tasks should be at the top.</p>
                     
                     <div class="task-container">
                         <div class="task-list" id="taskList">
@@ -69,16 +68,6 @@ window.Level7 = {
                                 <div class="priority-item medium">🟡 Medium Priority</div>
                                 <div class="priority-item low">🟢 Low Priority</div>
                             </div>
-                            
-                            <div class="drag-instructions">
-                                <h5>Instructions:</h5>
-                                <ul>
-                                    <li>Drag tasks using the ⋮⋮ handle</li>
-                                    <li>Reorder by priority (high → low)</li>
-                                    <li>Watch for visual feedback</li>
-                                    <li>Use Undo to reverse changes</li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +75,6 @@ window.Level7 = {
                 <!-- Kanban Board Section -->
                 <div class="drag-section" id="kanban-section">
                     <h3>Kanban Workflow Board</h3>
-                    <p class="section-description">Drag tasks between columns to track progress through your workflow.</p>
                     
                     <div class="kanban-board">
                         <div class="kanban-column" data-status="todo">
@@ -115,7 +103,6 @@ window.Level7 = {
                 <!-- File Organizer Section -->
                 <div class="drag-section" id="files-section">
                     <h3>File Organization System</h3>
-                    <p class="section-description">Drag files into appropriate folders to organize your workspace.</p>
                     
                     <div class="file-organizer">
                         <div class="file-area">
@@ -156,7 +143,6 @@ window.Level7 = {
                 <!-- Shopping Cart Section -->
                 <div class="drag-section" id="shopping-section">
                     <h3>Shopping Cart Manager</h3>
-                    <p class="section-description">Drag items to add to cart or organize by category.</p>
                     
                     <div class="shopping-container">
                         <div class="products-area">
