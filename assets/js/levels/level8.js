@@ -1,4 +1,4 @@
-// Level 8 - Data Tables with Sorting
+// level8.js - Data Tables with Sorting
 
 window.Level8 = {
     employees: [
@@ -39,12 +39,67 @@ window.Level8 = {
         department: '',
         status: ''
     },
+    importData: null,
+    validationErrors: [],
 
     getContent() {
         return `
             <div class="level-content">
                 <h2>Level 8: Data Tables with Sorting</h2>
                 
+                <!-- Import Section -->
+                <div class="import-section" id="importSection">
+                    <h4>📤 Import Employee Data</h4>
+                    
+                    <div class="import-controls">
+                        <div class="file-input-wrapper">
+                            <input type="file" id="csvFileInput" accept=".csv" />
+                            <label for="csvFileInput" class="file-input-label">
+                                📁 Choose CSV File
+                            </label>
+                        </div>
+                        
+                        <button type="button" id="downloadTemplateBtn" class="action-btn secondary">
+                            📋 Download Template
+                        </button>
+                        
+                        <button type="button" id="cancelImportBtn" class="action-btn">
+                            ✖️ Cancel
+                        </button>
+                    </div>
+                    
+                    <div class="drop-zone" id="csvDropZone">
+                        <div class="drop-zone-content">
+                            <div class="drop-icon">📂</div>
+                            <div class="drop-text">Drag and drop your CSV file here</div>
+                            <div class="drop-subtext">or click "Choose CSV File" button above</div>
+                        </div>
+                    </div>
+                    
+                    <div class="file-info" id="fileInfo">
+                        <div class="file-details">
+                            <span class="file-name" id="fileName"></span>
+                            <span class="file-size" id="fileSize"></span>
+                        </div>
+                        
+                        <div class="import-preview" id="importPreview"></div>
+                        
+                        <div class="validation-errors" id="validationErrors">
+                            <h5>Validation Errors:</h5>
+                            <ul class="error-list" id="errorList"></ul>
+                        </div>
+                        
+                        <div class="import-actions">
+                            <button type="button" id="validateBtn" class="action-btn secondary">
+                                ✅ Validate Data
+                            </button>
+                            <button type="button" id="confirmImportBtn" class="action-btn success" disabled>
+                                📤 Import Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Table Controls -->
                 <div class="table-controls">
                     <div class="controls-row">
@@ -72,6 +127,9 @@ window.Level8 = {
                         </div>
                         
                         <div class="action-section">
+                            <button type="button" id="importBtn" class="action-btn success">
+                                📤 Import Data
+                            </button>
                             <button type="button" id="exportBtn" class="action-btn secondary" disabled>
                                 📊 Export Selected
                             </button>
@@ -188,6 +246,23 @@ window.Level8 = {
                 <li>Clear filters and verify reset</li>
             </ul>
             
+            <h5>Data Import:</h5>
+            <ul>
+                <li>Import employee data from CSV files</li>
+                <li>Download CSV template with sample data</li>
+                <li>Drag and drop CSV files for import</li>
+                <li>Validate data before importing</li>
+                <li>Handle duplicate emails and validation errors</li>
+                <li>Preview import data before confirmation</li>
+            </ul>
+            
+            <h5>Data Export:</h5>
+            <ul>
+                <li>Export selected employees to CSV</li>
+                <li>Include all employee information in export</li>
+                <li>Automatic filename with timestamp</li>
+            </ul>
+            
             <h5>Row Selection:</h5>
             <ul>
                 <li>Select individual rows with checkboxes</li>
@@ -206,10 +281,12 @@ window.Level8 = {
             
             <h5>Data Actions:</h5>
             <ul>
+                <li>Import CSV files with validation</li>
+                <li>Export selected data to CSV</li>
                 <li>Edit individual employee records</li>
                 <li>Delete single or multiple employees</li>
-                <li>Export selected data to CSV</li>
                 <li>Verify data persistence after actions</li>
+                <li>Handle file upload errors and validation</li>
             </ul>
             
             <h4>Automation Tips:</h4>
@@ -218,9 +295,13 @@ window.Level8 = {
                 <li>Verify column sort indicators</li>
                 <li>Check row selection state management</li>
                 <li>Validate pagination calculations</li>
+                <li>Test file upload and drag-drop functionality</li>
+                <li>Verify import validation and error handling</li>
                 <li>Test data export functionality</li>
                 <li>Verify filter combinations work correctly</li>
-                <li>Check responsive table behavior</li>
+                <li>Check responsive table behavior and scrolling</li>
+                <li>Test CSV parsing with various file formats</li>
+                <li>Validate template download functionality</li>
             </ul>
             
             <h4>Skills Practiced:</h4>
@@ -230,9 +311,14 @@ window.Level8 = {
                 <li>Search and filter validation</li>
                 <li>Row selection automation</li>
                 <li>Pagination navigation</li>
+                <li>File upload automation</li>
+                <li>Drag and drop testing</li>
+                <li>CSV data validation</li>
                 <li>Bulk action testing</li>
-                <li>Data export verification</li>
+                <li>Data export/import verification</li>
+                <li>Error handling validation</li>
                 <li>Complex data validation</li>
+                <li>Responsive design testing</li>
             </ul>
         `;
     },
@@ -246,9 +332,12 @@ window.Level8 = {
         this.currentPage = 1;
         this.rowsPerPage = 10;
         this.filters = { search: '', department: '', status: '' };
+        this.importData = null;
+        this.validationErrors = [];
 
         this.bindEvents();
         this.updateTable();
+        this.checkTableScroll();
     },
 
     bindEvents() {
@@ -321,6 +410,10 @@ window.Level8 = {
         });
 
         // Action buttons
+        document.getElementById('importBtn')?.addEventListener('click', () => {
+            this.showImportSection();
+        });
+
         document.getElementById('exportBtn')?.addEventListener('click', () => {
             this.exportSelected();
         });
@@ -328,6 +421,50 @@ window.Level8 = {
         document.getElementById('deleteSelectedBtn')?.addEventListener('click', () => {
             this.deleteSelected();
         });
+
+        // Import functionality
+        document.getElementById('csvFileInput')?.addEventListener('change', (e) => {
+            this.handleFileSelect(e.target.files[0]);
+        });
+
+        document.getElementById('downloadTemplateBtn')?.addEventListener('click', () => {
+            this.downloadTemplate();
+        });
+
+        document.getElementById('cancelImportBtn')?.addEventListener('click', () => {
+            this.hideImportSection();
+        });
+
+        document.getElementById('validateBtn')?.addEventListener('click', () => {
+            this.validateImportData();
+        });
+
+        document.getElementById('confirmImportBtn')?.addEventListener('click', () => {
+            this.confirmImport();
+        });
+
+        // Drag and drop
+        const dropZone = document.getElementById('csvDropZone');
+        if (dropZone) {
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.handleFileSelect(files[0]);
+                }
+            });
+        }
 
         // Row actions (using event delegation)
         document.addEventListener('click', (e) => {
@@ -649,6 +786,9 @@ window.Level8 = {
         // Update info displays
         this.updateTableInfo();
         this.updateSelectionUI();
+
+        // Check scroll after update
+        setTimeout(() => this.checkTableScroll(), 100);
     },
 
     updateTableInfo() {
@@ -743,6 +883,380 @@ window.Level8 = {
         window.URL.revokeObjectURL(url);
 
         this.logAction(`Exported ${selectedEmployees.length} employees to CSV`, 'success');
+    },
+
+    // Import functionality
+    showImportSection() {
+        const importSection = document.getElementById('importSection');
+        const tableControls = document.querySelector('.table-controls');
+
+        if (importSection) {
+            importSection.classList.add('active');
+        }
+
+        // Hide table controls
+        if (tableControls) {
+            tableControls.style.display = 'none';
+        }
+
+        this.logAction('Import section opened', 'info');
+    },
+
+    hideImportSection() {
+        const importSection = document.getElementById('importSection');
+        const tableControls = document.querySelector('.table-controls');
+        const fileInfo = document.getElementById('fileInfo');
+
+        if (importSection) {
+            importSection.classList.remove('active');
+        }
+
+        // Show table controls
+        if (tableControls) {
+            tableControls.style.display = 'block';
+        }
+
+        // Reset import state
+        if (fileInfo) {
+            fileInfo.classList.remove('show');
+        }
+
+        this.importData = null;
+        this.validationErrors = [];
+
+        // Reset file input
+        const fileInput = document.getElementById('csvFileInput');
+        if (fileInput) {
+            fileInput.value = '';
+        }
+
+        this.logAction('Import cancelled', 'info');
+    },
+
+    handleFileSelect(file) {
+        if (!file) return;
+
+        if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+            this.showFeedback('Please select a CSV file', 'error');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) { // 5MB limit
+            this.showFeedback('File size must be less than 5MB', 'error');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.parseCSV(e.target.result, file);
+        };
+        reader.readAsText(file);
+
+        // Show file info
+        document.getElementById('fileName').textContent = file.name;
+        document.getElementById('fileSize').textContent = this.formatFileSize(file.size);
+        document.getElementById('fileInfo').classList.add('show');
+
+        this.logAction(`File selected: ${file.name}`, 'info');
+    },
+
+    parseCSV(csvText, file) {
+        try {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+
+            // Expected headers
+            const expectedHeaders = ['name', 'email', 'department', 'position', 'salary', 'hireDate', 'status'];
+            const headerMapping = this.mapHeaders(headers, expectedHeaders);
+
+            if (!headerMapping) {
+                this.showFeedback('Invalid CSV format. Please check the headers.', 'error');
+                return;
+            }
+
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim()) {
+                    const values = this.parseCSVLine(lines[i]);
+                    const employee = {};
+
+                    expectedHeaders.forEach(header => {
+                        const columnIndex = headerMapping[header];
+                        employee[header] = columnIndex !== -1 ? (values[columnIndex] || '').trim().replace(/"/g, '') : '';
+                    });
+
+                    // Generate ID
+                    employee.id = Math.max(...this.employees.map(e => e.id), 0) + data.length + 1;
+
+                    data.push(employee);
+                }
+            }
+
+            this.importData = data;
+            this.renderImportPreview();
+
+            // Reset validation
+            document.getElementById('confirmImportBtn').disabled = true;
+            document.getElementById('validationErrors').classList.remove('show');
+
+            this.logAction(`Parsed ${data.length} records from ${file.name}`, 'success');
+
+        } catch (error) {
+            console.error('CSV parsing error:', error);
+            this.showFeedback('Error parsing CSV file. Please check the format.', 'error');
+        }
+    },
+
+    parseCSVLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+
+            if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+                result.push(current);
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+
+        result.push(current);
+        return result;
+    },
+
+    mapHeaders(fileHeaders, expectedHeaders) {
+        const mapping = {};
+        const lowerExpected = expectedHeaders.map(h => h.toLowerCase());
+        const lowerFile = fileHeaders.map(h => h.toLowerCase());
+
+        // Try exact matches first
+        for (let i = 0; i < expectedHeaders.length; i++) {
+            const expected = lowerExpected[i];
+            const index = lowerFile.indexOf(expected);
+            mapping[expectedHeaders[i]] = index;
+        }
+
+        // Try partial matches for missing headers
+        for (let i = 0; i < expectedHeaders.length; i++) {
+            if (mapping[expectedHeaders[i]] === -1) {
+                const expected = lowerExpected[i];
+                for (let j = 0; j < lowerFile.length; j++) {
+                    if (lowerFile[j].includes(expected) || expected.includes(lowerFile[j])) {
+                        mapping[expectedHeaders[i]] = j;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Check if critical fields are mapped
+        const criticalFields = ['name', 'email'];
+        for (const field of criticalFields) {
+            if (mapping[field] === -1) {
+                return null; // Critical field missing
+            }
+        }
+
+        return mapping;
+    },
+
+    renderImportPreview() {
+        const preview = document.getElementById('importPreview');
+        if (!this.importData || this.importData.length === 0) {
+            preview.innerHTML = '<p>No valid data found in the file.</p>';
+            return;
+        }
+
+        const maxRows = Math.min(5, this.importData.length);
+        const headers = ['Name', 'Email', 'Department', 'Position', 'Salary', 'Hire Date', 'Status'];
+
+        let html = '<table><thead><tr>';
+        headers.forEach(header => {
+            html += `<th>${header}</th>`;
+        });
+        html += '</tr></thead><tbody>';
+
+        for (let i = 0; i < maxRows; i++) {
+            const employee = this.importData[i];
+            html += '<tr>';
+            html += `<td>${employee.name || ''}</td>`;
+            html += `<td>${employee.email || ''}</td>`;
+            html += `<td>${employee.department || ''}</td>`;
+            html += `<td>${employee.position || ''}</td>`;
+            html += `<td>${employee.salary || ''}</td>`;
+            html += `<td>${employee.hireDate || ''}</td>`;
+            html += `<td>${employee.status || ''}</td>`;
+            html += '</tr>';
+        }
+
+        html += '</tbody></table>';
+
+        if (this.importData.length > maxRows) {
+            html += `<p style="margin-top: 1rem; text-align: center; color: #666; font-size: 0.9rem;">Showing first ${maxRows} of ${this.importData.length} records</p>`;
+        }
+
+        preview.innerHTML = html;
+    },
+
+    validateImportData() {
+        if (!this.importData) {
+            this.showFeedback('No data to validate', 'error');
+            return;
+        }
+
+        this.validationErrors = [];
+        const existingEmails = this.employees.map(e => e.email.toLowerCase());
+
+        this.importData.forEach((employee, index) => {
+            const rowNum = index + 2; // +2 because of 0-index and header row
+
+            // Required field validation
+            if (!employee.name || employee.name.trim() === '') {
+                this.validationErrors.push(`Row ${rowNum}: Name is required`);
+            }
+
+            if (!employee.email || employee.email.trim() === '') {
+                this.validationErrors.push(`Row ${rowNum}: Email is required`);
+            } else {
+                // Email format validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(employee.email)) {
+                    this.validationErrors.push(`Row ${rowNum}: Invalid email format`);
+                }
+
+                // Duplicate email check
+                if (existingEmails.includes(employee.email.toLowerCase())) {
+                    this.validationErrors.push(`Row ${rowNum}: Email already exists`);
+                }
+            }
+
+            // Salary validation
+            if (employee.salary && isNaN(parseFloat(employee.salary))) {
+                this.validationErrors.push(`Row ${rowNum}: Invalid salary format`);
+            }
+
+            // Date validation
+            if (employee.hireDate && employee.hireDate.trim() !== '') {
+                const date = new Date(employee.hireDate);
+                if (isNaN(date.getTime())) {
+                    this.validationErrors.push(`Row ${rowNum}: Invalid hire date format`);
+                }
+            }
+
+            // Department validation
+            const validDepartments = ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'IT', 'Design'];
+            if (employee.department && !validDepartments.includes(employee.department)) {
+                this.validationErrors.push(`Row ${rowNum}: Invalid department "${employee.department}". Must be one of: ${validDepartments.join(', ')}`);
+            }
+
+            // Status validation
+            const validStatuses = ['Active', 'Inactive'];
+            if (employee.status && !validStatuses.includes(employee.status)) {
+                this.validationErrors.push(`Row ${rowNum}: Invalid status "${employee.status}". Must be Active or Inactive`);
+            }
+        });
+
+        this.displayValidationResults();
+    },
+
+    displayValidationResults() {
+        const errorsContainer = document.getElementById('validationErrors');
+        const errorList = document.getElementById('errorList');
+        const confirmBtn = document.getElementById('confirmImportBtn');
+
+        if (this.validationErrors.length > 0) {
+            errorList.innerHTML = this.validationErrors.map(error =>
+                `<li class="error-item">${error}</li>`
+            ).join('');
+            errorsContainer.classList.add('show');
+            confirmBtn.disabled = true;
+
+            this.logAction(`Validation failed: ${this.validationErrors.length} errors found`, 'error');
+        } else {
+            errorsContainer.classList.remove('show');
+            confirmBtn.disabled = false;
+
+            this.logAction(`Validation passed: ${this.importData.length} records ready to import`, 'success');
+        }
+    },
+
+    confirmImport() {
+        if (!this.importData || this.validationErrors.length > 0) {
+            this.showFeedback('Cannot import data with validation errors', 'error');
+            return;
+        }
+
+        // Process import data
+        this.importData.forEach(employee => {
+            // Set defaults for missing values
+            employee.department = employee.department || 'Engineering';
+            employee.position = employee.position || 'Employee';
+            employee.salary = parseFloat(employee.salary) || 50000;
+            employee.hireDate = employee.hireDate || new Date().toISOString().split('T')[0];
+            employee.status = employee.status || 'Active';
+        });
+
+        // Add to employees array
+        this.employees.push(...this.importData);
+
+        // Update display
+        this.applyFilters();
+        this.updateTable();
+        this.hideImportSection();
+
+        this.logAction(`Successfully imported ${this.importData.length} employees`, 'success');
+        this.showFeedback(`Successfully imported ${this.importData.length} employees`, 'success');
+    },
+
+    downloadTemplate() {
+        const headers = ['name', 'email', 'department', 'position', 'salary', 'hireDate', 'status'];
+        const sampleData = [
+            ['John Doe', 'john.doe@company.com', 'Engineering', 'Software Engineer', '75000', '2023-01-15', 'Active'],
+            ['Jane Smith', 'jane.smith@company.com', 'Marketing', 'Marketing Specialist', '60000', '2023-02-20', 'Active'],
+            ['Bob Johnson', 'bob.johnson@company.com', 'Sales', 'Sales Representative', '55000', '2023-03-10', 'Inactive']
+        ];
+
+        const csvContent = [
+            headers.join(','),
+            ...sampleData.map(row => row.map(cell => `"${cell}"`).join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'employee_import_template.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        this.logAction('Downloaded import template', 'info');
+    },
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    },
+
+    checkTableScroll() {
+        const tableContainer = document.querySelector('.table-container');
+        if (tableContainer) {
+            const hasScroll = tableContainer.scrollWidth > tableContainer.clientWidth;
+            if (hasScroll) {
+                tableContainer.classList.add('has-scroll');
+            } else {
+                tableContainer.classList.remove('has-scroll');
+            }
+        }
     },
 
     // Utility functions

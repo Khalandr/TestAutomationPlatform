@@ -1,4 +1,4 @@
-/* Level 8 - Data Tables with Sorting Specific Styles */
+/* level8.css - Data Tables with Sorting Specific Styles */
 
 /* Table Controls */
 .table-controls {
@@ -60,6 +60,7 @@
 .action-section {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .action-btn {
@@ -73,6 +74,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    white-space: nowrap;
 }
 
 .action-btn.secondary {
@@ -82,6 +84,15 @@
 
 .action-btn.secondary:hover:not(:disabled) {
     background-color: #2980b9;
+}
+
+.action-btn.success {
+    background-color: #27ae60;
+    color: white;
+}
+
+.action-btn.success:hover:not(:disabled) {
+    background-color: #219a52;
 }
 
 .action-btn.danger {
@@ -97,6 +108,194 @@
     background-color: #bdc3c7;
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+/* Import Section */
+.import-section {
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: none;
+}
+
+.import-section.active {
+    display: block;
+}
+
+.import-section h4 {
+    margin: 0 0 1rem 0;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.import-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.file-input-wrapper input[type=file] {
+    position: absolute;
+    left: -9999px;
+}
+
+.file-input-label {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.file-input-label:hover {
+    background-color: #2980b9;
+}
+
+.drop-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.drop-zone.dragover {
+    border-color: var(--secondary-color);
+    background-color: #e6f3ff;
+    transform: scale(1.02);
+}
+
+.drop-zone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.drop-icon {
+    font-size: 2rem;
+    color: #666;
+}
+
+.drop-text {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.drop-subtext {
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.file-info {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+.file-info.show {
+    display: block;
+}
+
+.file-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.file-name {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.file-size {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.import-preview {
+    max-height: 200px;
+    overflow: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: white;
+}
+
+.import-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.import-preview th,
+.import-preview td {
+    padding: 0.5rem;
+    border: 1px solid #eee;
+    text-align: left;
+}
+
+.import-preview th {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+.import-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.validation-errors {
+    background-color: #fff5f5;
+    border: 1px solid #fed7d7;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: none;
+}
+
+.validation-errors.show {
+    display: block;
+}
+
+.validation-errors h5 {
+    margin: 0 0 0.5rem 0;
+    color: #e74c3c;
+}
+
+.error-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.error-item {
+    padding: 0.25rem 0;
+    color: #c53030;
+    font-size: 0.9rem;
 }
 
 .info-row {
@@ -142,9 +341,28 @@
     background-color: white;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: visible;
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.table-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to left, rgba(255,255,255,0.8), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.table-container.has-scroll::after {
+    opacity: 1;
 }
 
 .data-table {
@@ -552,7 +770,8 @@
 
 @media (max-width: 768px) {
     .table-container {
-        overflow-x: auto;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
     }
 
     .data-table {
@@ -585,15 +804,24 @@
         gap: 0.5rem;
     }
 
-    .pagination-controls {
-        flex-wrap: wrap;
-        justify-content: center;
+    .pagination-container {
+        flex-direction: column;
+        text-align: center;
     }
 
     .department-badge,
     .status-badge {
         font-size: 0.7rem;
         padding: 0.2rem 0.5rem;
+    }
+
+    .import-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .import-actions {
+        flex-direction: column;
     }
 }
 
@@ -644,7 +872,8 @@
 @media print {
     .table-controls,
     .pagination-container,
-    .table-results {
+    .table-results,
+    .import-section {
         display: none;
     }
 
