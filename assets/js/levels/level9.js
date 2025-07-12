@@ -2,18 +2,18 @@
 
 window.Level9 = {
     images: [
-        { id: 1, title: "Mountain Landscape", category: "nature", src: "https://picsum.photos/800/600?random=1", thumb: "https://picsum.photos/200/200?random=1", width: 800, height: 600 },
-        { id: 2, title: "City Skyline", category: "urban", src: "https://picsum.photos/800/600?random=2", thumb: "https://picsum.photos/200/200?random=2", width: 800, height: 600 },
-        { id: 3, title: "Forest Path", category: "nature", src: "https://picsum.photos/800/600?random=3", thumb: "https://picsum.photos/200/200?random=3", width: 800, height: 600 },
-        { id: 4, title: "Abstract Art", category: "art", src: "https://picsum.photos/800/600?random=4", thumb: "https://picsum.photos/200/200?random=4", width: 800, height: 600 },
-        { id: 5, title: "Ocean Waves", category: "nature", src: "https://picsum.photos/800/600?random=5", thumb: "https://picsum.photos/200/200?random=5", width: 800, height: 600 },
-        { id: 6, title: "Street Photography", category: "urban", src: "https://picsum.photos/800/600?random=6", thumb: "https://picsum.photos/200/200?random=6", width: 800, height: 600 },
-        { id: 7, title: "Desert Sunset", category: "nature", src: "https://picsum.photos/800/600?random=7", thumb: "https://picsum.photos/200/200?random=7", width: 800, height: 600 },
-        { id: 8, title: "Modern Architecture", category: "urban", src: "https://picsum.photos/800/600?random=8", thumb: "https://picsum.photos/200/200?random=8", width: 800, height: 600 },
-        { id: 9, title: "Colorful Painting", category: "art", src: "https://picsum.photos/800/600?random=9", thumb: "https://picsum.photos/200/200?random=9", width: 800, height: 600 },
-        { id: 10, title: "Garden Flowers", category: "nature", src: "https://picsum.photos/800/600?random=10", thumb: "https://picsum.photos/200/200?random=10", width: 800, height: 600 },
-        { id: 11, title: "Night Lights", category: "urban", src: "https://picsum.photos/800/600?random=11", thumb: "https://picsum.photos/200/200?random=11", width: 800, height: 600 },
-        { id: 12, title: "Sculpture Detail", category: "art", src: "https://picsum.photos/800/600?random=12", thumb: "https://picsum.photos/200/200?random=12", width: 800, height: 600 }
+        { id: 1, title: "Landscape Photo #1018", category: "landscape", src: "https://picsum.photos/id/1018/800/600", thumb: "https://picsum.photos/id/1018/200/200", width: 800, height: 600 },
+        { id: 2, title: "Landscape Photo #1022", category: "landscape", src: "https://picsum.photos/id/1022/800/600", thumb: "https://picsum.photos/id/1022/200/200", width: 800, height: 600 },
+        { id: 3, title: "Landscape Photo #1015", category: "landscape", src: "https://picsum.photos/id/1015/800/600", thumb: "https://picsum.photos/id/1015/200/200", width: 800, height: 600 },
+        { id: 4, title: "Portrait Photo #1025", category: "portrait", src: "https://picsum.photos/id/1025/600/800", thumb: "https://picsum.photos/id/1025/200/200", width: 600, height: 800 },
+        { id: 5, title: "Portrait Photo #1027", category: "portrait", src: "https://picsum.photos/id/1027/600/800", thumb: "https://picsum.photos/id/1027/200/200", width: 600, height: 800 },
+        { id: 6, title: "Portrait Photo #1035", category: "portrait", src: "https://picsum.photos/id/1035/600/800", thumb: "https://picsum.photos/id/1035/200/200", width: 600, height: 800 },
+        { id: 7, title: "Square Photo #1041", category: "square", src: "https://picsum.photos/id/1041/600/600", thumb: "https://picsum.photos/id/1041/200/200", width: 600, height: 600 },
+        { id: 8, title: "Square Photo #1043", category: "square", src: "https://picsum.photos/id/1043/600/600", thumb: "https://picsum.photos/id/1043/200/200", width: 600, height: 600 },
+        { id: 9, title: "Square Photo #1045", category: "square", src: "https://picsum.photos/id/1045/600/600", thumb: "https://picsum.photos/id/1045/200/200", width: 600, height: 600 },
+        { id: 10, title: "Landscape Photo #1059", category: "landscape", src: "https://picsum.photos/id/1059/800/600", thumb: "https://picsum.photos/id/1059/200/200", width: 800, height: 600 },
+        { id: 11, title: "Portrait Photo #1062", category: "portrait", src: "https://picsum.photos/id/1062/600/800", thumb: "https://picsum.photos/id/1062/200/200", width: 600, height: 800 },
+        { id: 12, title: "Square Photo #1070", category: "square", src: "https://picsum.photos/id/1070/600/600", thumb: "https://picsum.photos/id/1070/200/200", width: 600, height: 600 }
     ],
 
     filteredImages: [],
@@ -41,10 +41,10 @@ window.Level9 = {
                 <div class="gallery-controls">
                     <div class="controls-row">
                         <div class="filter-section">
-                            <button class="category-filter active" data-category="all">All Images</button>
-                            <button class="category-filter" data-category="nature">Nature</button>
-                            <button class="category-filter" data-category="urban">Urban</button>
-                            <button class="category-filter" data-category="art">Art</button>
+                            <button class="category-filter active" data-category="all">All Photos</button>
+                            <button class="category-filter" data-category="landscape">Landscape</button>
+                            <button class="category-filter" data-category="portrait">Portrait</button>
+                            <button class="category-filter" data-category="square">Square</button>
                         </div>
                         
                         <div class="view-controls">
@@ -54,7 +54,7 @@ window.Level9 = {
                     </div>
                     
                     <div class="gallery-info">
-                        <span id="imageCount">Showing ${this.images.length} images</span>
+                        <span id="imageCount">Showing ${this.images.length} photos</span>
                         
                         <div class="slideshow-controls">
                             <button id="slideshowToggle" class="slideshow-btn">▶ Start Slideshow</button>
@@ -277,8 +277,11 @@ window.Level9 = {
         document.addEventListener('click', (e) => {
             const galleryItem = e.target.closest('.gallery-item');
             if (galleryItem) {
-                const index = parseInt(galleryItem.getAttribute('data-index'));
-                this.openLightbox(index);
+                const imageId = parseInt(galleryItem.getAttribute('data-image-id'));
+                const index = this.filteredImages.findIndex(img => img.id === imageId);
+                if (index !== -1) {
+                    this.openLightbox(index);
+                }
             }
         });
 
@@ -289,8 +292,11 @@ window.Level9 = {
                 if (focusedItem && focusedItem.classList.contains('gallery-item')) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        const index = parseInt(focusedItem.getAttribute('data-index'));
-                        this.openLightbox(index);
+                        const imageId = parseInt(focusedItem.getAttribute('data-image-id'));
+                        const index = this.filteredImages.findIndex(img => img.id === imageId);
+                        if (index !== -1) {
+                            this.openLightbox(index);
+                        }
                     }
                 }
             }
@@ -310,38 +316,54 @@ window.Level9 = {
         // Navigation is now keyboard-only (arrow keys)
 
         // Zoom controls
-        document.getElementById('zoomIn')?.addEventListener('click', () => {
+        document.getElementById('zoomIn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.zoomImage(1.5);
         });
 
-        document.getElementById('zoomOut')?.addEventListener('click', () => {
+        document.getElementById('zoomOut')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.zoomImage(0.67);
         });
 
-        document.getElementById('zoomReset')?.addEventListener('click', () => {
+        document.getElementById('zoomReset')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.resetZoom();
         });
 
         // Lightbox slideshow
-        document.getElementById('lightboxSlideshowToggle')?.addEventListener('click', () => {
+        document.getElementById('lightboxSlideshowToggle')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.toggleSlideshow();
         });
 
         // Thumbnails toggle
-        document.getElementById('thumbnailsToggle')?.addEventListener('click', () => {
+        document.getElementById('thumbnailsToggle')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.toggleThumbnails();
         });
 
         // Action buttons
-        document.getElementById('fullscreenBtn')?.addEventListener('click', () => {
+        document.getElementById('fullscreenBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.toggleFullscreen();
         });
 
-        document.getElementById('downloadBtn')?.addEventListener('click', () => {
+        document.getElementById('downloadBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.downloadImage();
         });
 
-        document.getElementById('shareBtn')?.addEventListener('click', () => {
+        document.getElementById('shareBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.shareImage();
         });
 
@@ -535,7 +557,7 @@ window.Level9 = {
         document.querySelector(`[data-category="${category}"]`).classList.add('active');
 
         this.updateGallery();
-        this.logAction(`Filtered images by: ${category}`, 'info');
+        this.logAction(`Filtered photos by: ${category}`, 'info');
     },
 
     setViewMode(mode) {
@@ -565,7 +587,7 @@ window.Level9 = {
         const imageCount = document.getElementById('imageCount');
 
         galleryGrid.innerHTML = this.renderGalleryItems();
-        imageCount.textContent = `Showing ${this.filteredImages.length} images`;
+        imageCount.textContent = `Showing ${this.filteredImages.length} photos`;
 
         // Apply view mode
         if (this.viewMode === 'list') {
@@ -600,7 +622,7 @@ window.Level9 = {
             document.getElementById('closeLightbox')?.focus();
         }, 100);
 
-        this.logAction(`Opened lightbox for image: ${this.filteredImages[index].title}`, 'info');
+        this.logAction(`Opened lightbox for photo: ${this.filteredImages[index].title}`, 'info');
     },
 
     closeLightbox() {
@@ -673,7 +695,7 @@ window.Level9 = {
             this.resetZoom();
 
             const currentImage = this.filteredImages[index];
-            this.logAction(`Navigated to image: ${currentImage.title}`, 'info');
+            this.logAction(`Navigated to photo: ${currentImage.title}`, 'info');
         }
     },
 
@@ -733,13 +755,15 @@ window.Level9 = {
         if (this.isSlideshow) {
             this.stopSlideshow();
         } else {
-            // If lightbox is not open, open it first with the first image
+            // If lightbox is not open, open it first with the current filtered first image
             if (!this.isLightboxOpen) {
-                this.openLightbox(0);
-                // Wait for lightbox to open, then start slideshow
-                setTimeout(() => {
-                    this.startSlideshow();
-                }, 300);
+                if (this.filteredImages.length > 0) {
+                    this.openLightbox(0);
+                    // Wait for lightbox to open, then start slideshow
+                    setTimeout(() => {
+                        this.startSlideshow();
+                    }, 300);
+                }
             } else {
                 this.startSlideshow();
             }
@@ -868,15 +892,22 @@ window.Level9 = {
     downloadImage() {
         const currentImage = this.filteredImages[this.currentImageIndex];
 
-        // Simulate download
+        // Create a temporary link and trigger download
         const link = document.createElement('a');
         link.href = currentImage.src;
-        link.download = `${currentImage.title}.jpg`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        link.download = `${currentImage.title.replace(/\s+/g, '_')}.jpg`;
+        link.target = '_blank';
+        link.style.display = 'none';
 
-        this.logAction(`Downloaded image: ${currentImage.title}`, 'success');
+        document.body.appendChild(link);
+
+        // Prevent any event bubbling that might interfere
+        setTimeout(() => {
+            link.click();
+            document.body.removeChild(link);
+        }, 100);
+
+        this.logAction(`Downloaded photo: ${currentImage.title}`, 'success');
     },
 
     shareImage() {
@@ -897,7 +928,7 @@ window.Level9 = {
             });
         }
 
-        this.logAction(`Shared image: ${currentImage.title}`, 'info');
+        this.logAction(`Shared photo: ${currentImage.title}`, 'info');
     },
 
     // Keyboard Navigation
