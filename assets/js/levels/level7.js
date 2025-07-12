@@ -53,20 +53,24 @@ window.Level7 = {
                 <div class="drag-section active" id="tasks-section">
                     <h3>Task Priority Management</h3>
                     
+                    <!-- Task CRUD Controls -->
+                    <div class="task-controls">
+                        <button type="button" id="addTaskBtn" class="control-btn primary">
+                            <span class="btn-icon">➕</span> Add New Task
+                        </button>
+                        <div class="task-stats">
+                            <span class="stat-item">Total: <strong id="totalTasks">${this.tasks.length}</strong></span>
+                            <span class="stat-item high">High: <strong id="highTasks">${this.tasks.filter(t => t.priority === 'high').length}</strong></span>
+                            <span class="stat-item medium">Medium: <strong id="mediumTasks">${this.tasks.filter(t => t.priority === 'medium').length}</strong></span>
+                            <span class="stat-item low">Low: <strong id="lowTasks">${this.tasks.filter(t => t.priority === 'low').length}</strong></span>
+                        </div>
+                    </div>
+                    
                     <div class="task-container">
                         <div class="task-list" id="taskList">
                             <h4>Tasks <span class="action-hint">(Drag to reorder)</span></h4>
                             <div class="sortable-list" id="sortableTaskList">
                                 ${this.renderTasks()}
-                            </div>
-                        </div>
-                        
-                        <div class="task-info">
-                            <h4>Priority Guide</h4>
-                            <div class="priority-guide">
-                                <div class="priority-item high">🔴 High Priority</div>
-                                <div class="priority-item medium">🟡 Medium Priority</div>
-                                <div class="priority-item low">🟢 Low Priority</div>
                             </div>
                         </div>
                     </div>
@@ -217,6 +221,10 @@ window.Level7 = {
                     <div class="task-title">${task.title}</div>
                     <div class="task-priority ${task.priority}">${task.priority.toUpperCase()}</div>
                 </div>
+                <div class="task-actions">
+                    <button type="button" class="edit-task-btn" data-task-id="${task.id}" title="Edit task">✏️</button>
+                    <button type="button" class="delete-task-btn" data-task-id="${task.id}" title="Delete task">🗑️</button>
+                </div>
             </div>
         `).join('');
     },
@@ -365,8 +373,24 @@ window.Level7 = {
             this.randomizeItems();
         });
 
-        // Remove cart items
+        // Task CRUD buttons
+        document.getElementById('addTaskBtn')?.addEventListener('click', () => {
+            this.showAddTaskModal();
+        });
+
+        // Task action buttons (using event delegation)
         document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('edit-task-btn')) {
+                const taskId = parseInt(e.target.getAttribute('data-task-id'));
+                this.showEditTaskModal(taskId);
+            }
+
+            if (e.target.classList.contains('delete-task-btn')) {
+                const taskId = parseInt(e.target.getAttribute('data-task-id'));
+                this.showDeleteTaskConfirmation(taskId);
+            }
+
+            // Remove cart items (existing functionality)
             if (e.target.classList.contains('remove-item')) {
                 const itemId = parseInt(e.target.getAttribute('data-item-id'));
                 this.removeFromCart(itemId);
@@ -627,6 +651,194 @@ window.Level7 = {
         if (taskList) {
             taskList.innerHTML = this.renderTasks();
         }
+        this.updateTaskStats();
+    },
+
+    updateTaskStats() {
+        const totalTasks = document.getElementById('totalTasks');
+        const highTasks = document.getElementById('highTasks');
+        const mediumTasks = document.getElementById('mediumTasks');
+        const lowTasks = document.getElementById('lowTasks');
+
+        if (totalTasks) totalTasks.textContent = this.tasks.length;
+        if (highTasks) highTasks.textContent = this.tasks.filter(t => t.priority === 'high').length;
+        if (mediumTasks) mediumTasks.textContent = this.tasks.filter(t => t.priority === 'medium').length;
+        if (lowTasks) lowTasks.textContent = this.tasks.filter(t => t.priority === 'low').length;
+    },
+
+    // Task CRUD Functions
+    showAddTaskModal() {
+        const modalHTML = `
+            <div class="task-modal-overlay" id="taskModalOverlay">
+                <div class="task-modal">
+                    <div class="modal-header">
+                        <h4>Add New Task</h4>
+                        <button type="button" class="modal-close" onclick="Level7.closeTaskModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="taskForm">
+                            <div class="form-group">
+                                <label for="taskTitle">Task Title: <span class="required">*</span></label>
+                                <input type="text" id="taskTitle" name="title" required placeholder="Enter task description">
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Priority:</label>
+                                <select id="taskPriority" name="priority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="cancel-btn" onclick="Level7.closeTaskModal()">Cancel</button>
+                        <button type="button" class="primary-btn" onclick="Level7.saveTask()">Add Task</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        document.getElementById('taskTitle').focus();
+    },
+
+    showEditTaskModal(taskId) {
+        const task = this.tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        const modalHTML = `
+            <div class="task-modal-overlay" id="taskModalOverlay">
+                <div class="task-modal">
+                    <div class="modal-header">
+                        <h4>Edit Task</h4>
+                        <button type="button" class="modal-close" onclick="Level7.closeTaskModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="taskForm">
+                            <input type="hidden" id="taskId" value="${task.id}">
+                            <div class="form-group">
+                                <label for="taskTitle">Task Title: <span class="required">*</span></label>
+                                <input type="text" id="taskTitle" name="title" required value="${task.title}" placeholder="Enter task description">
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Priority:</label>
+                                <select id="taskPriority" name="priority">
+                                    <option value="low" ${task.priority === 'low' ? 'selected' : ''}>Low</option>
+                                    <option value="medium" ${task.priority === 'medium' ? 'selected' : ''}>Medium</option>
+                                    <option value="high" ${task.priority === 'high' ? 'selected' : ''}>High</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="cancel-btn" onclick="Level7.closeTaskModal()">Cancel</button>
+                        <button type="button" class="primary-btn" onclick="Level7.updateTask()">Update Task</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        document.getElementById('taskTitle').focus();
+    },
+
+    showDeleteTaskConfirmation(taskId) {
+        const task = this.tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        const modalHTML = `
+            <div class="task-modal-overlay" id="taskModalOverlay">
+                <div class="task-modal danger">
+                    <div class="modal-header">
+                        <h4>Delete Task</h4>
+                        <button type="button" class="modal-close" onclick="Level7.closeTaskModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="delete-confirmation">
+                            <div class="warning-icon">⚠️</div>
+                            <p>Are you sure you want to delete this task?</p>
+                            <div class="task-preview">
+                                <strong>"${task.title}"</strong>
+                                <span class="priority-badge ${task.priority}">${task.priority.toUpperCase()}</span>
+                            </div>
+                            <p class="warning-text">This action cannot be undone.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="cancel-btn" onclick="Level7.closeTaskModal()">Cancel</button>
+                        <button type="button" class="danger-btn" onclick="Level7.deleteTask(${taskId})">Delete Task</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    },
+
+    closeTaskModal() {
+        const modal = document.getElementById('taskModalOverlay');
+        if (modal) {
+            modal.remove();
+        }
+    },
+
+    saveTask() {
+        const title = document.getElementById('taskTitle').value.trim();
+        const priority = document.getElementById('taskPriority').value;
+
+        if (!title) {
+            alert('Please enter a task title');
+            return;
+        }
+
+        this.saveActionForUndo();
+
+        const newTask = {
+            id: Math.max(...this.tasks.map(t => t.id), 0) + 1,
+            title: title,
+            priority: priority,
+            status: 'todo'
+        };
+
+        this.tasks.push(newTask);
+        this.updateTaskList();
+        this.closeTaskModal();
+        this.logActivity(`Added new task: "${title}"`, 'success');
+    },
+
+    updateTask() {
+        const taskId = parseInt(document.getElementById('taskId').value);
+        const title = document.getElementById('taskTitle').value.trim();
+        const priority = document.getElementById('taskPriority').value;
+
+        if (!title) {
+            alert('Please enter a task title');
+            return;
+        }
+
+        this.saveActionForUndo();
+
+        const taskIndex = this.tasks.findIndex(t => t.id === taskId);
+        if (taskIndex !== -1) {
+            this.tasks[taskIndex].title = title;
+            this.tasks[taskIndex].priority = priority;
+            this.updateTaskList();
+            this.updateKanbanBoard(); // Update kanban if task is there too
+            this.closeTaskModal();
+            this.logActivity(`Updated task: "${title}"`, 'success');
+        }
+    },
+
+    deleteTask(taskId) {
+        this.saveActionForUndo();
+
+        const task = this.tasks.find(t => t.id === taskId);
+        this.tasks = this.tasks.filter(t => t.id !== taskId);
+        this.updateTaskList();
+        this.updateKanbanBoard(); // Update kanban if task was there too
+        this.closeTaskModal();
+        this.logActivity(`Deleted task: "${task.title}"`, 'info');
     },
 
     updateKanbanBoard() {

@@ -1,4 +1,192 @@
-/* Level 7 - Drag & Drop Interface Specific Styles */
+@media (max-width: 768px) {
+    .section-tabs {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .tab-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .task-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .task-controls .control-btn.primary {
+        justify-content: center;
+    }
+
+    .task-stats {
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .stat-item {
+        font-size: 0.85rem;
+    }
+
+    .task-item {
+        padding: 0.75rem 1rem;
+        min-height: 50px;
+    }
+
+    .drag-handle {
+        font-size: 0.9rem;
+        padding: 0.25rem;
+    }
+
+    .task-actions {
+        opacity: 1; /* Always visible on mobile */
+    }
+
+    .folder-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .product-list {
+        justify-content: center;
+    }
+
+    .shopping-item {
+        min-width: 90px;
+        max-width: 110px;
+    }
+
+    .action-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .control-btn {
+        justify-content: center;
+    }
+
+    .log-entry {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .shopping-cart {
+        max-width: none; /* Allow full width on mobile */
+    }
+
+    .task-modal {
+        width: 95%;
+        margin: 1rem;
+    }
+
+    .task-modal .modal-header,
+    .task-modal .modal-body,
+    .task-modal .modal-footer {
+        padding: 1rem;
+    }
+
+    .task-modal .modal-footer {
+        flex-direction: column;
+    }
+
+    .task-modal .modal-footer button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .drag-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .task-controls {
+        padding: 0.75rem;
+    }
+
+    .task-stats {
+        gap: 0.75rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-item {
+        font-size: 0.8rem;
+    }
+
+    .task-item,
+    .kanban-task,
+    .file-item {
+        padding: 0.5rem;
+    }
+
+    .task-item {
+        padding: 0.6rem 0.75rem;
+        min-height: 45px;
+    }
+
+    .task-title,
+    .file-name,
+    .cart-item .item-name {
+        font-size: 0.85rem;
+    }
+
+    .edit-task-btn,
+    .delete-task-btn {
+        min-width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+
+    .folder {
+        padding: 0.75rem;
+        min-height: 100px;
+    }
+
+    .folder-icon {
+        font-size: 1.5rem;
+    }
+
+    .folder-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .shopping-item {
+        min-width: 80px;
+        max-width: 100px;
+        padding: 0.5rem;
+    }
+
+    .cart-item {
+        padding: 0.5rem;
+    }
+
+    .product-categories {
+        gap: 0.75rem;
+    }
+
+    .category-section {
+        padding: 0.75rem;
+    }
+
+    .task-modal {
+        width: 98%;
+        margin: 0.5rem;
+    }
+
+    .task-modal .modal-header h4 {
+        font-size: 1.1rem;
+    }
+
+    .task-modal .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .task-modal .form-group input,
+    .task-modal .form-group select {
+        padding: 0.6rem;
+    }
+}/* Level 7 - Drag & Drop Interface Specific Styles */
 
 /* Section Tabs */
 .section-tabs {
@@ -62,20 +250,77 @@
 
 /* Task Management Section */
 .task-container {
-    display: flex;
-    gap: 1.5rem;
     margin-top: 1rem;
 }
 
 .task-list {
-    flex: 3; /* Give more space to the task list */
-    min-width: 0;
+    width: 100%; /* Full width since no sidebar */
 }
 
-.task-info {
-    flex: 1;
-    min-width: 220px;
-    max-width: 300px; /* Prevent it from getting too wide */
+/* Task Controls */
+.task-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.task-controls .control-btn.primary {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.task-controls .control-btn.primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+.task-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.stat-item strong {
+    color: var(--primary-color);
+}
+
+.stat-item.high::before {
+    content: "🔴";
+    font-size: 0.8rem;
+}
+
+.stat-item.medium::before {
+    content: "🟡";
+    font-size: 0.8rem;
+}
+
+.stat-item.low::before {
+    content: "🟢";
+    font-size: 0.8rem;
 }
 
 .task-list h4,
@@ -107,32 +352,66 @@
     gap: 1rem;
     background-color: white;
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 0.75rem;
-    margin-bottom: 0.75rem;
+    border-left: 4px solid transparent; /* Space for priority color */
+    border-radius: 0; /* Remove border radius for row look */
+    padding: 1rem 1.5rem;
+    margin-bottom: 1px; /* Minimal gap between rows */
     cursor: move;
     transition: all 0.2s ease;
     user-select: none;
-    word-wrap: break-word; /* Prevent text overflow */
+    word-wrap: break-word;
+    min-height: 60px; /* Consistent row height */
+}
+
+.task-item:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.task-item:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin-bottom: 0;
+}
+
+/* Priority-based left border colors */
+.task-item:has(.task-priority.high) {
+    border-left-color: #e74c3c;
+}
+
+.task-item:has(.task-priority.medium) {
+    border-left-color: #f39c12;
+}
+
+.task-item:has(.task-priority.low) {
+    border-left-color: #27ae60;
+}
+
+/* Fallback for browsers that don't support :has() */
+.task-item {
+    border-left-color: #ddd;
 }
 
 .task-item:hover {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transform: translateY(-1px);
+    transform: translateX(2px); /* Slight horizontal movement instead of vertical */
 }
 
 .task-item.dragging {
     opacity: 0.5;
-    transform: rotate(2deg);
+    transform: rotate(1deg); /* Reduced rotation */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .drag-handle {
     color: #999;
     font-weight: bold;
     cursor: grab;
-    font-size: 1.2rem;
-    padding: 0.25rem;
-    flex-shrink: 0; /* Prevent handle from shrinking */
+    font-size: 1rem;
+    padding: 0.5rem 0.25rem;
+    flex-shrink: 0;
+    border-right: 1px solid #eee;
+    margin-right: 0.5rem;
 }
 
 .drag-handle:active {
@@ -141,10 +420,11 @@
 
 .task-content {
     flex: 1;
-    min-width: 0; /* Allow text to wrap properly */
+    min-width: 0;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
 }
 
 .task-title {
@@ -153,15 +433,56 @@
     line-height: 1.3;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    flex: 1;
+}
+
+.task-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.task-item:hover .task-actions {
+    opacity: 1;
+}
+
+.edit-task-btn,
+.delete-task-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+.edit-task-btn:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.delete-task-btn:hover {
+    background-color: #e74c3c;
+    color: white;
 }
 
 .task-priority {
     font-size: 0.7rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 12px;
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px;
     font-weight: bold;
     text-transform: uppercase;
     width: fit-content;
+    flex-shrink: 0; /* Prevent priority badge from shrinking */
+    letter-spacing: 0.5px;
 }
 
 .task-priority.high {
@@ -182,42 +503,213 @@
     border: 1px solid #27ae60;
 }
 
-/* Priority Guide */
-.priority-guide {
+/* Task Modal Styles */
+.task-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(2px);
+}
+
+.task-modal {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+    transform: scale(1);
+    transition: transform 0.2s ease;
+}
+
+.task-modal.danger {
+    border-top: 4px solid #e74c3c;
+}
+
+.task-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.task-modal .modal-header h4 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.task-modal .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.25rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.task-modal .modal-close:hover {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.task-modal .modal-body {
+    padding: 1.5rem;
+}
+
+.task-modal .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.task-modal .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.task-modal .form-group input,
+.task-modal .form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
+}
+
+.task-modal .form-group input:focus,
+.task-modal .form-group select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.required {
+    color: #e74c3c;
+}
+
+.task-modal .modal-footer {
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.task-modal .modal-footer button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+
+.cancel-btn {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #7f8c8d;
+}
+
+.primary-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: #2980b9;
+}
+
+.danger-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.danger-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Delete Confirmation Styles */
+.delete-confirmation {
+    text-align: center;
+}
+
+.warning-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.delete-confirmation p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.task-preview {
     background-color: #f8f9fa;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.priority-item {
+    margin: 1rem 0;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0;
-    font-size: 0.9rem;
 }
 
-.drag-instructions {
-    background-color: #e6f3ff;
-    border: 1px solid var(--secondary-color);
-    border-radius: 6px;
-    padding: 1rem;
+.priority-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.drag-instructions h5 {
-    margin: 0 0 0.5rem 0;
-    color: var(--primary-color);
+.priority-badge.high {
+    background-color: #fee;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
 }
 
-.drag-instructions ul {
-    margin: 0;
-    padding-left: 1.5rem;
+.priority-badge.medium {
+    background-color: #fff8e1;
+    color: #f39c12;
+    border: 1px solid #f39c12;
 }
 
-.drag-instructions li {
-    margin-bottom: 0.25rem;
+.priority-badge.low {
+    background-color: #e8f5e8;
+    color: #27ae60;
+    border: 1px solid #27ae60;
+}
+
+.warning-text {
+    color: #e74c3c;
+    font-weight: 500;
     font-size: 0.9rem;
 }
 
@@ -735,7 +1227,10 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
     .task-container {
-        flex-direction: column;
+        margin-top: 1rem;
+    }
+
+    .priority-items {
         gap: 1rem;
     }
 
@@ -771,6 +1266,21 @@
     .tab-btn {
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
+    }
+
+    .priority-items {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .task-item {
+        padding: 0.75rem 1rem;
+        min-height: 50px;
+    }
+
+    .drag-handle {
+        font-size: 0.9rem;
+        padding: 0.25rem;
     }
 
     .folder-grid {
@@ -812,10 +1322,27 @@
         font-size: 1.1rem;
     }
 
+    .priority-guide-top {
+        padding: 0.75rem;
+    }
+
+    .priority-items {
+        gap: 0.5rem;
+    }
+
+    .priority-item {
+        font-size: 0.8rem;
+    }
+
     .task-item,
     .kanban-task,
     .file-item {
         padding: 0.5rem;
+    }
+
+    .task-item {
+        padding: 0.6rem 0.75rem;
+        min-height: 45px;
     }
 
     .task-title,
